@@ -1,0 +1,266 @@
+SW3:
+  port: 5000
+  hostname: SW3
+  domain: m.soltani
+  link_aggregations:
+    - device: SW4
+      channel: 1
+      mode: "on" # Note that on converts to True
+      interfaces: [e0/2, e0/3]
+    - device: SW5
+      channel: 2
+      mode: "on"
+      interfaces: [e0/0, e0/1]
+    - device: SW6
+      channel: 3
+      mode: "on"
+      interfaces: [e1/2, e1/3]
+    - device: SW8
+      channel: 4
+      mode: passive
+      interfaces: [e1/0, e1/1]
+  vtp: VTP01
+  spanning_tree:
+    mode: mst
+    mst_pirmary_for: 0
+  rootguards: [e2/1-3, e3/0-3]
+  portfasts: [e2/1-3, e3/0-3]
+  dhcptrusts: [Po1-4, e2/0]
+
+
+SW4:
+  port: 5002
+  hostname: SW4
+  domain: m.soltani
+  link_aggregations:
+    - device: SW3
+      channel: 1
+      mode: "on"
+      interfaces: [e0/3, e1/0]
+    - device: SW5
+      channel: 2
+      mode: "on"
+      interfaces: [e1/2, e1/3]
+    - device: SW6
+      channel: 3
+      mode: "on"
+      interfaces: [e0/0, e0/1]
+    - device: SW8
+      channel: 4
+      mode: passive
+      interfaces: [e0/2, e1/1]
+  vtp: VTP01
+  spanning_tree: mst
+  rootguards: [e2/0-3, e3/0-3]
+  portfasts: [e2/0-3, e3/0-3]
+  dhcptrusts: [Po1-4]
+
+
+SW5:
+  port: 5001
+  hostname: SW5
+  domain: m.soltani
+  link_aggregations:
+    - device: SW3
+      channel: 1
+      mode: "on"
+      interfaces: [e0/0, e0/1]
+    - device: SW4
+      channel: 2
+      mode: "on"
+      interfaces: [e1/2, e1/3]
+    - device: SW6
+      channel: 3
+      mode: "on"
+      interfaces: [e0/2, e0/3]
+    - device: SW7
+      channel: 4
+      mode: passive
+      interfaces: [e1/0, e1/1]
+  vtp: VTP01
+  spanning_tree:
+    mode: mst
+    mst_secondary_for: 0
+    costs:
+      Po2: 1
+  rootguards: [e2/1-3, e3/0-3]
+  portfasts: [e2/1-3, e3/0-3]
+  dhcptrusts: [Po1-4, e2/0]
+
+SW6:
+  port: 5003
+  hostname: SW6
+  domain: m.soltani
+  link_aggregations:
+    - device: SW3
+      channel: 1
+      mode: "on"
+      interfaces: [e1/2, e1/3]
+    - device: SW4
+      channel: 2
+      mode: "on"
+      interfaces: [e0/0, e0/1]
+    - device: SW5
+      channel: 3
+      mode: "on"
+      interfaces: [e0/2, e0/3]
+    - device: SW7
+      channel: 4
+      mode: passive
+      interfaces: [e1/0, e1/1]
+  vtp: VTP01
+  spanning_tree: mst
+  rootguards: [e2/0-3, e3/0-3]
+  portfasts: [e2/0-3, e3/0-3]
+  dhcptrusts: [Po1-4]
+
+SW7:
+  port: 5005
+  hostname: SW7
+  domain: m.soltani
+  link_aggregations:
+    - device: SW5
+      channel: 1
+      mode: active
+      interfaces: [e0/2, e0/3]
+    - device: SW6
+      channel: 2
+      mode: active
+      interfaces: [e0/0, e0/1]
+  vtp:
+    domain: VTP01
+    is_primary: true
+    vlans: 2-20
+  spanning_tree:
+    mode: mst
+    mst_pirmary_for: 1
+  portfasts: [e1/0-3, e2/0-3, e3/0-3]
+  dhcptrusts: [Po1-2]
+
+SW8:
+  port: 5004
+  hostname: SW8
+  domain: m.soltani
+  link_aggregations:
+    - device: SW3
+      channel: 1
+      mode: active
+      interfaces: [e0/2, e0/3]
+    - device: SW4
+      channel: 2
+      mode: active
+      interfaces: [e0/0, e0/1]
+  vtp: VTP01
+  spanning_tree:
+    mode: mst
+    mst_pirmary_for: 2
+    mst_root_for: MST01
+    mst_instances:
+      1: 2-20
+      2: 11-20
+    mst_server_for_vtp: VTP01
+  portfasts: [e1/0-3, e2/0-3, e3/0-3]
+  dhcptrusts: [Po1-2]
+
+SW17:
+  port: 5006
+  hostname: SW17
+  domain: m.soltani
+  interfaces:
+    e1/0:
+      device: SW5
+      mode: trunk
+      vlans: all
+    e1/1:
+      device: SW3
+      mode: trunk
+      vlans: all
+  link_aggregations:
+    - device: SW18
+      channel: 1
+      mode: active
+      interfaces: [e0/2, e0/3]
+    - device: SW19
+      channel: 2
+      mode: active
+      interfaces: [e0/0, e0/1]
+  vtp: VTP01
+  spanning_tree:
+    mode: rstp
+    # root: primary
+    # root_for_vlans: 1-20
+  vlans:
+    10:
+      ip: 192.168.10.1 255.255.255.0
+    20:
+      ip: 192.168.20.1 255.255.255.0
+  dhcps:
+    - name: DHCP10
+      network: 192.168.10.0 255.255.255.0
+      exclude: 192.168.10.1 192.168.10.10
+      gateway: 192.168.10.1
+    - name: DHCP20
+      network: 192.168.20.0 255.255.255.0
+      exclude: 192.168.20.1 192.168.20.10
+      gateway: 192.168.20.1
+  portfasts: [e1/2-3, e2/0-3, e3/0-3]
+  dhcptrusts: [Po1-2, e1/0-1]
+
+SW18:
+  port: 5007
+  hostname: SW18
+  domain: m.soltani
+  interfaces:
+    e1/0:
+      mode: access
+      vlan: 20
+  link_aggregations:
+    - device: SW17
+      channel: 1
+      mode: active
+      interfaces: [e0/0, e0/1]
+    - device: SW19
+      channel: 2
+      mode: active
+      interfaces: [e0/2, e0/3]
+  vtp: VTP01
+  spanning_tree: rstp
+  udld: true
+  loopguards: true
+  portfasts: [e1/0-3, e2/0-3, e3/0-3]
+  dhcptrusts: [Po1-2]
+
+SW19:
+  port: 5008
+  hostname: SW19
+  domain: m.soltani
+  interfaces:
+    e1/0:
+      mode: access
+      vlan: 10
+  link_aggregations:
+    - device: SW17
+      channel: 1
+      mode: active
+      interfaces: [e0/0, e0/1]
+    - device: SW18
+      channel: 2
+      mode: active
+      interfaces: [e0/2, e0/3]
+  vtp: VTP01
+  spanning_tree: rstp
+  udld: true # UniDirectional Link Detection (UDLD) Protocol
+  loopguards: true
+  portfasts: [e1/0-3, e2/0-3, e3/0-3]
+  dhcptrusts: [Po1-2]
+
+# Now only ios devices can be config
+# PC1:
+#   port: 5009
+#   hostname: PC15
+#   ip: dhcp
+
+# PC2:
+#   port: 5011
+#   hostname: PC16
+#   ip: dhcp
