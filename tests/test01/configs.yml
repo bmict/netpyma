@@ -1,4 +1,5 @@
 SW3:
+  ip: 192.168.179.130
   port: 5000
   hostname: SW3
   domain: m.soltani
@@ -29,6 +30,7 @@ SW3:
 
 
 SW4:
+  ip: 192.168.179.130
   port: 5002
   hostname: SW4
   domain: m.soltani
@@ -57,6 +59,7 @@ SW4:
 
 
 SW5:
+  ip: 192.168.179.130
   port: 5001
   hostname: SW5
   domain: m.soltani
@@ -88,6 +91,7 @@ SW5:
   dhcptrusts: [Po1-4, e2/0]
 
 SW6:
+  ip: 192.168.179.130
   port: 5003
   hostname: SW6
   domain: m.soltani
@@ -115,6 +119,7 @@ SW6:
   dhcptrusts: [Po1-4]
 
 SW7:
+  ip: 192.168.179.130
   port: 5005
   hostname: SW7
   domain: m.soltani
@@ -138,6 +143,7 @@ SW7:
   dhcptrusts: [Po1-2]
 
 SW8:
+  ip: 192.168.179.130
   port: 5004
   hostname: SW8
   domain: m.soltani
@@ -163,6 +169,7 @@ SW8:
   dhcptrusts: [Po1-2]
 
 SW17:
+  ip: 192.168.179.130
   port: 5006
   hostname: SW17
   domain: m.soltani
@@ -207,6 +214,7 @@ SW17:
   dhcptrusts: [Po1-2, e1/0-1]
 
 SW18:
+  ip: 192.168.179.130
   port: 5007
   hostname: SW18
   domain: m.soltani
@@ -231,6 +239,7 @@ SW18:
   dhcptrusts: [Po1-2]
 
 SW19:
+  ip: 192.168.179.130
   port: 5008
   hostname: SW19
   domain: m.soltani
@@ -256,11 +265,13 @@ SW19:
 
 # Now only ios devices can be config
 # PC1:
+#   ip: 192.168.179.130
 #   port: 5009
 #   hostname: PC15
 #   ip: dhcp
 
 # PC2:
+#   ip: 192.168.179.130
 #   port: 5011
 #   hostname: PC16
 #   ip: dhcp

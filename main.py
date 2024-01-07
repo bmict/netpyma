@@ -7,7 +7,7 @@ from netpyma.tools.documentaion_tools import save_config_file
 from netpyma.acts import ALL_SETTERS
 
 
-def config_set(port, configs: dict, prj_folder: Path):
+def config_set(ip: str, port: int, configs: dict, prj_folder: Path):
     apply = sys.argv.count('-a') > 0
     config_commands = []
     for fn in ALL_SETTERS:
@@ -16,7 +16,7 @@ def config_set(port, configs: dict, prj_folder: Path):
             config_commands += fn_new_commands
             config_commands.append('\n')
     if apply:
-        ios_device = create_connection(port)
+        ios_device = create_connection(ip, port)
         ios_device.send_config_set(config_commands)
     out_folder = prj_folder.joinpath('./dist')
     if not Path.exists(out_folder):
@@ -39,7 +39,7 @@ def run(prj_folder: Path, verbose: bool):
         print(configs_list)
     threads = list()
     for _, configs in configs_list.items():
-        th = Thread(target=config_set, args=(configs['port'], configs, prj_folder))
+        th = Thread(target=config_set, args=(configs['ip'], configs['port'], configs, prj_folder))
         threads.append(th)
 
     for th in threads:
